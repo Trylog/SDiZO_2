@@ -30,12 +30,20 @@ void kruskalMatrix(int v, int e){   //v - wierzchołki, e - krawędzie
     }
 }
 
+void KruskalList(int v, int e){
+
+}
+
 void PrimMatrix(int v, int e){
 
     bool* visited = new bool[e];
     for (int i = 0; i < e; ++i) visited[i] = false;
     PriorityQueue queue = PriorityQueue(e);
     GraphMatrix matrix = GraphMatrix(v);
+}
+
+void PrimList(int v, int e) {
+
 }
 
 
