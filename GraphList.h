@@ -1,16 +1,24 @@
 //
-// Created by micha on 08.05.2023.
+// Created by micha on 09.05.2023.
 //
 
-#ifndef SDIZO_2_EDGE_H
-#define SDIZO_2_EDGE_H
+#ifndef SDIZO_2_GRAPHLIST_H
+#define SDIZO_2_GRAPHLIST_H
+
+#include "Edge.h"
 
 namespace std {
 
-    struct Edge {
-        int n1, n2, weight;
+    class GraphList {
+        Edge** lists;
+        int v; //liczba wierzchołków
+    public:
+        explicit  GraphList(int v);
+        ~GraphList();
+        void insert(Edge edge);
+        void display();
     };
 
 } // std
 
-#endif //SDIZO_2_EDGE_H
+#endif //SDIZO_2_GRAPHLIST_H
