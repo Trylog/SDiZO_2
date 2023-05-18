@@ -12,20 +12,19 @@ namespace std {
         *a = temp;
     }
 
-    void PriorityQueue::heapify(int i) {//TODO make min-heap
-        int largest;
-        auto top = heap[i];
-        while(i<size/2){
+    void PriorityQueue::heapify(int i) {
+        int smallest;
+        while(true){
             auto left = i*2+1;
             auto right = i*2+2;
-            if(right<size && heap[right].weight>heap[left].weight){
-                largest=right;
-            } else largest=left;
-            if(top.weight>=heap[largest].weight)break;
-            heap[i]=heap[largest];
-            i=largest;
+            if(left < size && heap[left].weight < heap[i].weight){
+                smallest = left;
+            }else smallest = i;
+            if(right < size && heap[right].weight < heap[smallest].weight) smallest = right;
+            if(smallest != i){swap(&heap[i], &heap[smallest]);
+            } else break;
+            i = smallest;
         }
-        heap[i]=top;
     }
 
     void PriorityQueue::deleteMinimum() {
@@ -33,12 +32,11 @@ namespace std {
         auto temp = new Edge[size-1];
         swap(&heap[0], &heap[size-1]);
         size--;
-        heapify(0);
-        for (int i = 1; i < size; ++i) {
-            temp[i]=heap[i];
-        }
+        for (int i = size / 2 - 1; i >= 0; i--)heapify(i);
+
+        /*for (int i = 1; i < size; ++i)temp[i]=heap[i+1];
         delete[] heap;
-        heap=temp;
+        heap=temp;*/
     }
 
     void PriorityQueue::insert(Edge edge) {
@@ -51,7 +49,7 @@ namespace std {
             heap=temp;
         }
         heap[size]=edge;
-        for(int i = size; heap[(i-1)/2].weight<heap[i].weight&&i!=0;i=(i-1)/2) {
+        for(int i = size; heap[(i-1)/2].weight>heap[i].weight&&i!=0;i=(i-1)/2) {
             swap(&heap[i], &heap[(i-1)/2]);
         }
         size++;

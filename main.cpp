@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "PriorityQueue.h"
 #include "DisjoinedSets.h"
 #include "GraphMatrix.h"
@@ -7,19 +8,38 @@
 
 using namespace std;
 
-void kruskalMatrix(int v, int e){   //v - wierzchołki, e - krawędzie
+void kruskalMatrix(){   //v - wierzchołki, e - krawędzie
 
-    PriorityQueue queue = PriorityQueue(e);
+    int v, e, wStart;
+
+    fstream input;
+    input.open("dane_droga.txt", ios::in);
+    //if (input.good()) {
+        input >> e;
+        input >> v;
+        PriorityQueue queue = PriorityQueue(e);
+        input >> wStart;
+        if (e) {
+            Edge tempIn;
+            for (auto i = 0; i < e; ++i) {
+                if (!input.eof()) {
+                    input >> tempIn.n1;
+                    input >> tempIn.n2;
+                    input >> tempIn.weight;
+                    queue.insert(tempIn);
+                } else throw -3; //wrong file length
+            }
+        }
+  //  }
+
+
+
     DisjoinedSets sets = DisjoinedSets(v);
     GraphMatrix matrix = GraphMatrix(v);
     Edge edge;
 
     for (int i = 0; i < v; ++i) {
         sets.make(i);
-    }
-    for (int i = 0; i < e; ++i) {
-        //TODO wczytywanie krawędzi do kolejki
-        queue.insert();
     }
     for (int i = 1; i < v; ++i) {
         do{
@@ -29,33 +49,74 @@ void kruskalMatrix(int v, int e){   //v - wierzchołki, e - krawędzie
 
         matrix.insert(edge);
         sets.unite(edge);
-        matrix.display();
     }
+    matrix.display();
 }
 
 void KruskalList(int v, int e){
 
 }
 
-void Prim(int v, int e, int wStart){
+void buildFromFile(string filePath, MSTree &output, int &v, int &e, int &wStart) {
+    fstream input;
+    input.open(filePath, ios::in);
+    if (input.good()) {
+        input >> e;
+        input >> v;
+        input >> wStart;
+        if (e) {
+            Edge tempIn;
+            for (auto i = 0; i < e; ++i) {
+                if (!input.eof()) {
+                    input >> tempIn.n1;
+                    input >> tempIn.n2;
+                    input >> tempIn.weight;
+                    output.addEdge(tempIn);
+                } else throw -3; //wrong file length
+            }
+        }
+    }
+}
 
+void primo(){
+    int v, e, wStart;
+    fstream input;
+    input.open("dane_droga.txt", ios::in);
+    //if(input.good()) {
+        input >> e;
+        input >> v;
+        input >> wStart;
+        MSTree g(v);
+        if (e) {
+            Edge tempIn;
+            for (auto i = 0; i < e; ++i) {
+                if (!input.eof()) {
+                    input >> tempIn.n1;
+                    input >> tempIn.n2;
+                    input >> tempIn.weight;
+                    g.addEdge(tempIn);
+                } else throw -3; //wrong file length
+            }
+        }
+    //}
     TNode * p;
     Edge eg;
-    bool* visited = new bool[e];
-    for (int i = 0; i < e; ++i) visited[i] = false;
+    bool* visited = new bool[v];
+    for (int i = 0; i < v; ++i) visited[i] = false;
     PriorityQueue queue = PriorityQueue(e);
     MSTree m(v);
-    MSTree g(v);
+
+
+
     visited[wStart]= true;
-    for (int i = 0; i < e; ++i) {
-        //TODO wczytywanie krawędzi
-        g.addEdge(eg);
-    }
-    for (p = g.getAList(wStart); p ; p=p->next) {
-        if(!visited[p->v]){
-            eg.n1=wStart;
-            eg.n2=p->weight;
-            queue.insert(eg);
+    for (int i = 0; i < v; ++i) {
+
+        for (p = g.getAList(wStart); p ; p=p->next) {
+            if (!visited[p->v]) {
+                eg.n1 = wStart;
+                eg.n2 = p->weight;
+                queue.insert(eg);
+            }
         }
         do {
             eg=queue.minimum();
@@ -65,7 +126,7 @@ void Prim(int v, int e, int wStart){
         visited[eg.n2] = true;
         wStart=eg.n2;
     }
-
+    m.print();
 }
 
 void PrimList(int v, int e) {
@@ -76,7 +137,9 @@ void PrimList(int v, int e) {
 
 int main() {
 
-
+    //primo();
+    kruskalMatrix();
+    system("pause");
 
     return 0;
 }

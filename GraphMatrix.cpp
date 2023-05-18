@@ -2,6 +2,7 @@
 // Created by micha on 08.05.2023.
 //
 
+#include <iostream>
 #include "GraphMatrix.h"
 
 namespace std {
@@ -26,6 +27,12 @@ namespace std {
     }
 
     void GraphMatrix::display() {//TODO wyświetlanie grafu
-
+        for (int i = 0; i < v; ++i) {
+            for (int j = 0; j < v; ++j) {
+                auto a = matrix[i][j];
+                cout<<a<<"; ";
+            }
+            cout<<endl;
+        }
     }
 } // std
