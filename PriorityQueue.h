@@ -13,10 +13,11 @@ namespace std {
 
     private:
         Edge* heap;
-        int size, allocatedSize;
+        int allocatedSize;
         static inline void swap(Edge* a,Edge* b);
         void heapify(int i);
     public:
+        int size;
         explicit PriorityQueue(int size);
         ~PriorityQueue();
         void deleteMinimum();

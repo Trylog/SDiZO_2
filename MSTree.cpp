@@ -58,6 +58,6 @@ namespace std {
             for( p = A [ i ]; p; p = p->next ) cout << p->v << ":" << p->weight << " ";
             cout << endl;
         }
-        cout << endl << endl << "Minimal Spanning Tree Weight = " << weight << endl << endl;
+       // cout << endl << endl << "Minimal Spanning Tree Weight = " << weight << endl << endl;
     }
 } // std

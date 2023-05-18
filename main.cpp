@@ -8,17 +8,16 @@
 
 using namespace std;
 
-void kruskalMatrix(){   //v - wierzchołki, e - krawędzie
+void kruskalMatrix(string nazwa){   //v - wierzchołki, e - krawędzie
 
-    int v, e, wStart;
+    int v, e;
 
     fstream input;
-    input.open("dane_droga.txt", ios::in);
+    input.open(nazwa, ios::in);
     //if (input.good()) {
         input >> e;
         input >> v;
         PriorityQueue queue = PriorityQueue(e);
-        input >> wStart;
         if (e) {
             Edge tempIn;
             for (auto i = 0; i < e; ++i) {
@@ -78,14 +77,14 @@ void buildFromFile(string filePath, MSTree &output, int &v, int &e, int &wStart)
     }
 }
 
-void primo(){
-    int v, e, wStart;
+void primo(string nazwa){
+    int v, e, wStart=0;
     fstream input;
-    input.open("dane_droga.txt", ios::in);
+    input.open(nazwa, ios::in);
     //if(input.good()) {
         input >> e;
         input >> v;
-        input >> wStart;
+
         MSTree g(v);
         if (e) {
             Edge tempIn;
@@ -114,17 +113,20 @@ void primo(){
         for (p = g.getAList(wStart); p ; p=p->next) {
             if (!visited[p->v]) {
                 eg.n1 = wStart;
-                eg.n2 = p->weight;
+                eg.n2 = p->v;
+                eg.weight=p->weight;
                 queue.insert(eg);
             }
         }
         do {
             eg=queue.minimum();
             queue.deleteMinimum();
-        } while (visited[eg.n2]);
-        m.addEdge(eg);
-        visited[eg.n2] = true;
-        wStart=eg.n2;
+        } while (visited[eg.n2]&&queue.size);
+        if(queue.size) {
+            m.addEdge(eg);
+            visited[eg.n2] = true;
+            wStart = eg.n2;
+        }
     }
     m.print();
 }
@@ -136,9 +138,24 @@ void PrimList(int v, int e) {
 
 
 int main() {
-
+    cout<<"podaj algorytm"<<endl;
+    string odp="";
+    cin>>odp;
+    if(odp=="kruskal"){
+        cout<<"Podaj nazwe pliku"<<endl;
+        odp="";
+        cin>>odp;
+        kruskalMatrix(odp);
+    }
+    if(odp=="prim"){
+        cout<<"Podaj nazwe pliku"<<endl;
+        odp="";
+        cin>>odp;
+        primo(odp);
+    }
+    //cout<<"Podaj nazwe pliku"<<endl;
     //primo();
-    kruskalMatrix();
+    //kruskalMatrix();
     system("pause");
 
     return 0;
