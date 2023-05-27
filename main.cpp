@@ -5,6 +5,7 @@
 #include "GraphMatrix.h"
 #include "MSTree.h"
 #include "TNode.h"
+#include "EdgeDij.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ void kruskalMatrix(string nazwa){   //v - wierzchołki, e - krawędzie
     //if (input.good()) {
         input >> e;
         input >> v;
-        PriorityQueue queue = PriorityQueue(e);
+        PriorityQueue<Edge> queue = PriorityQueue<Edge>(e);
         if (e) {
             Edge tempIn;
             for (auto i = 0; i < e; ++i) {
@@ -87,7 +88,7 @@ void primo(string nazwa){
 
         MSTree g(v);
         if (e) {
-            Edge tempIn;
+            Edge tempIn{};
             for (auto i = 0; i < e; ++i) {
                 if (!input.eof()) {
                     input >> tempIn.n1;
@@ -99,10 +100,10 @@ void primo(string nazwa){
         }
     //}
     TNode * p;
-    Edge eg;
+    Edge eg{};
     bool* visited = new bool[v];
     for (int i = 0; i < v; ++i) visited[i] = false;
-    PriorityQueue queue = PriorityQueue(e);
+    PriorityQueue<Edge> queue = PriorityQueue<Edge>(e);
     MSTree m(v);
 
 
@@ -135,7 +136,29 @@ void PrimList(int v, int e) {
 
 }
 
+void DijkstraList(string nazwa){
+    int v, e;
 
+    fstream input;
+    input.open(nazwa, ios::in);
+    //if (input.good()) {
+    input >> e;
+    input >> v;
+    PriorityQueue<Edge> queue = PriorityQueue<Edge>(e);
+    if (e) {
+        EdgeDij tempIn{};
+        for (auto i = 0; i < e; ++i) {
+            if (!input.eof()) {
+                input >> tempIn.n1;
+                input >> tempIn.n2;
+                input >> tempIn.weight;
+                tempIn.wasVisited = false;
+                queue.insert(tempIn);
+            } else throw -3; //wrong file length
+        }
+    }
+    //  }
+}
 
 int main() {
     cout<<"podaj algorytm"<<endl;
