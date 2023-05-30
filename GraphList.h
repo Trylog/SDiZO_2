@@ -6,13 +6,14 @@
 #define SDIZO_2_GRAPHLIST_H
 
 #include "Edge.h"
+#include "TNode.h"
 
 namespace std {
 
     class GraphList {
-        Edge** lists;
         int v; //liczba wierzchołków
     public:
+        TNode** lists;
         explicit  GraphList(int v);
         ~GraphList();
         void insert(Edge edge);
