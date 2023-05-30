@@ -30,7 +30,7 @@ namespace std {
 
     void MSTree::addEdge ( Edge e ){
         TNode *p;
-        weight += e.weight;
+        //weight += e.weight;
         p = new TNode;
         p->v = e.n2;
         p->weight = e.weight;
@@ -51,13 +51,16 @@ namespace std {
     void MSTree::print( ){
         int i;
         TNode *p;
-
+        weight=0;
         cout << endl;
         for( i = 0; i <= Alen; i++ ){
             cout << "Vertex " << i << " - ";
-            for( p = A [ i ]; p; p = p->next ) cout << p->v << ":" << p->weight << " ";
+            for( p = A [ i ]; p; p = p->next ){
+                cout << p->v << ":" << p->weight << " ";
+                weight+=p->weight;
+            }
             cout << endl;
         }
-       // cout << endl << endl << "Minimal Spanning Tree Weight = " << weight << endl << endl;
+        cout << endl << endl << "Minimal Spanning Tree Weight = " << weight/2 << endl << endl;
     }
 } // std

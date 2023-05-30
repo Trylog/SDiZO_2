@@ -27,12 +27,15 @@ namespace std {
     }
 
     void GraphMatrix::display() {//TODO wyświetlanie grafu
+        int weight=0;
         for (int i = 0; i < v; ++i) {
             for (int j = 0; j < v; ++j) {
                 auto a = matrix[i][j];
                 cout<<a<<"; ";
+                weight+=a;
             }
             cout<<endl;
         }
+        cout<<"weight: "<<weight<<endl;
     }
 } // std

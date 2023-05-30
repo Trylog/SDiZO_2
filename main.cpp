@@ -5,10 +5,59 @@
 #include "GraphMatrix.h"
 #include "MSTree.h"
 #include "TNode.h"
-#include "EdgeDij.h"
 #include "GraphList.h"
 
 using namespace std;
+
+void displayM(string nazwa, bool mst){
+    int v, e, f;
+
+    fstream input;
+    input.open(nazwa, ios::in);
+    //if (input.good()) {
+    input >> e;
+    input >> v;
+    if(mst) input >> f;
+    GraphMatrix matrix = GraphMatrix(v);
+    if (e) {
+        Edge tempIn;
+        for (auto i = 0; i < e; ++i) {
+            if (!input.eof()) {
+                input >> tempIn.n1;
+                input >> tempIn.n2;
+                input >> tempIn.weight;
+                matrix.insert(tempIn);
+            } else throw -3; //wrong file length
+        }
+        matrix.display();
+    }
+    //  }
+}
+
+void displayL(string nazwa, bool mst){
+    int v, e, f;
+
+    fstream input;
+    input.open(nazwa, ios::in);
+    //if (input.good()) {
+    input >> e;
+    input >> v;
+    if(mst) input >> f;
+    GraphList matrix = GraphList(v);
+    if (e) {
+        Edge tempIn;
+        for (auto i = 0; i < e; ++i) {
+            if (!input.eof()) {
+                input >> tempIn.n1;
+                input >> tempIn.n2;
+                input >> tempIn.weight;
+                matrix.insert(tempIn);
+            } else throw -3; //wrong file length
+        }
+        matrix.display();
+    }
+    //  }
+}
 
 void kruskalMatrix(string nazwa){   //v - wierzchołki, e - krawędzie
 
@@ -19,7 +68,7 @@ void kruskalMatrix(string nazwa){   //v - wierzchołki, e - krawędzie
     //if (input.good()) {
         input >> e;
         input >> v;
-        PriorityQueue<Edge> queue = PriorityQueue<Edge>(e);
+        PriorityQueue queue = PriorityQueue(e);
         if (e) {
             Edge tempIn;
             for (auto i = 0; i < e; ++i) {
@@ -52,11 +101,48 @@ void kruskalMatrix(string nazwa){   //v - wierzchołki, e - krawędzie
     matrix.display();
 }
 
-void KruskalList(int v, int e){
+void kruskalList(string nazwa){
+    int v, e;
 
+    fstream input;
+    input.open(nazwa, ios::in);
+    //if (input.good()) {
+    input >> e;
+    input >> v;
+    PriorityQueue queue = PriorityQueue(e);
+    if (e) {
+        Edge tempIn;
+        for (auto i = 0; i < e; ++i) {
+            if (!input.eof()) {
+                input >> tempIn.n1;
+                input >> tempIn.n2;
+                input >> tempIn.weight;
+                queue.insert(tempIn);
+            } else throw -3; //wrong file length
+        }
+    }
+    //  }
+
+    DisjoinedSets sets = DisjoinedSets(v);
+    MSTree matrix = MSTree(v);
+    Edge edge;
+
+    for (int i = 0; i < v; ++i) {
+        sets.make(i);
+    }
+    for (int i = 1; i < v; ++i) {
+        do{
+            edge = queue.minimum();
+            queue.deleteMinimum();
+        }while(sets.find(edge.n1) == sets.find(edge.n2));
+
+        matrix.addEdge(edge);
+        sets.unite(edge);
+    }
+    matrix.print();
 }
 
-void primo(string nazwa){
+void primList(string nazwa){
     int v, e, wStart=0;
     fstream input;
     input.open(nazwa, ios::in);
@@ -81,7 +167,7 @@ void primo(string nazwa){
     Edge eg{};
     bool* visited = new bool[v];
     for (int i = 0; i < v; ++i) visited[i] = false;
-    PriorityQueue<Edge> queue = PriorityQueue<Edge>(e);
+    PriorityQueue queue = PriorityQueue(e);
     MSTree m(v);
 
 
@@ -109,11 +195,61 @@ void primo(string nazwa){
     m.print();
 }
 
-void PrimList(int v, int e) {
+void primMatrix(string nazwa) {
+    int v, e, wStart=0;
+    fstream input;
+    input.open(nazwa, ios::in);
+    //if(input.good()) {
+    input >> e;
+    input >> v;
 
+    GraphMatrix g(v);
+    if (e) {
+        Edge tempIn{};
+        for (auto i = 0; i < e; ++i) {
+            if (!input.eof()) {
+                input >> tempIn.n1;
+                input >> tempIn.n2;
+                input >> tempIn.weight;
+                g.insert(tempIn);
+            } else throw -3; //wrong file length
+        }
+    }
+    //}
+    TNode * p;
+    Edge eg{};
+    bool* visited = new bool[v];
+    for (int i = 0; i < v; ++i) visited[i] = false;
+    PriorityQueue queue = PriorityQueue(e);
+    GraphMatrix m(v);
+
+
+    visited[wStart]= true;
+    for (int i = 0; i < v; ++i) {
+
+        for (int j = 0;j<v;j++) {
+            if(g.matrix[wStart][j] == 0)continue;
+            if (!visited[j]) {
+                eg.n1 = wStart;
+                eg.n2 = j;
+                eg.weight=g.matrix[wStart][j];
+                queue.insert(eg);
+            }
+        }
+        do {
+            eg=queue.minimum();
+            queue.deleteMinimum();
+        } while (visited[eg.n2] && queue.size);
+        if(queue.size) {
+            m.insert(eg);
+            visited[eg.n2] = true;
+            wStart = eg.n2;
+        }
+    }
+    m.display();
 }
 
-void DijkstraMatrix(string nazwa){
+void dijkstraMatrix(string nazwa){
     int v, e, firstV;
 
     fstream input;
@@ -146,20 +282,23 @@ void DijkstraMatrix(string nazwa){
     weight[firstV] = 0;
     predecessor[firstV] = -1;
     wasVisited[firstV] = 1;
-    int minWeight=0;
+    int minWeightNr=0;
     for (int j = 0; j < v; ++j) {
-        for (int i = 0; i < v; ++i) {
-            if (wasVisited[i] == 1 && weight[i] < minWeight)minWeight = i;
+        for (int i = 0; i < v; ++i){
+            if(wasVisited[i] == 1) minWeightNr = i;
         }
-        wasVisited[minWeight] = 2;
         for (int i = 0; i < v; ++i) {
-            if (matrix[minWeight][i] != 0 && wasVisited[i] != 2 &&
-                (weight[i] > weight[minWeight] + matrix[minWeight][i] || wasVisited[i] == 0)) {
-                weight[i] = weight[minWeight] + matrix[minWeight][i];
-                predecessor[i] = minWeight;
+            if (wasVisited[i] == 1 && weight[i] < weight[minWeightNr])minWeightNr = i;
+        }
+        //(wasVisited[temp->v] == 0 || wasVisited[temp->v] != 2 && weight[temp->v] > weight[minWeightNr] + temp->weight)
+        for (int i = 0; i < v; ++i) {
+            if (matrix[minWeightNr][i] != 0 && (wasVisited[i] == 0 || wasVisited[i] != 2 && weight[i] > weight[minWeightNr] + matrix[minWeightNr][i])) {
+                weight[i] = weight[minWeightNr] + matrix[minWeightNr][i];
+                predecessor[i] = minWeightNr;
                 wasVisited[i] = 1;
             }
         }
+        wasVisited[minWeightNr] = 2;
     }
 
     for (int i = 0; i < v; ++i) {
@@ -174,7 +313,7 @@ void DijkstraMatrix(string nazwa){
 
 }
 
-void DijkstraList(string nazwa){
+void dijkstraList(string nazwa){
     int v, e, firstV;
 
     fstream input;
@@ -203,25 +342,30 @@ void DijkstraList(string nazwa){
     weight[firstV] = 0;
     predecessor[firstV] = -1;
     wasVisited[firstV] = 1;
-    int minWeight=0;
+    int minWeightNr=0;
     TNode* temp;
     for (int j = 0; j < v; ++j) {
-        for (int i = 0; i < v; ++i) {
-            if (wasVisited[i] == 1 && weight[i] < minWeight)minWeight = i;
+        for (int i = 0; i < v; ++i){
+            if(wasVisited[i] == 1) minWeightNr = i;
         }
-        wasVisited[minWeight] = 2;
+        for (int i = 0; i < v; ++i) {
+            if (wasVisited[i] == 1 && weight[i] < weight[minWeightNr])minWeightNr = i;
+        }
+
         for (temp = list.lists[j]; temp; temp = temp->next) {
-            if ((wasVisited[temp->v] == 0 || wasVisited[temp->v] != 2 &&weight[temp->v] > weight[minWeight] + temp->weight)) {
-                weight[temp->v] = weight[minWeight] + temp->weight;
-                predecessor[temp->v] = minWeight;
+            if ((wasVisited[temp->v] == 0 || wasVisited[temp->v] != 2 && weight[temp->v] > weight[minWeightNr] + temp->weight)) {
+                weight[temp->v] = weight[minWeightNr] + temp->weight;
+                predecessor[temp->v] = minWeightNr;
                 wasVisited[temp->v] = 1;
             }
         }
+        wasVisited[minWeightNr] = 2;
     }
 
     for (int i = 0; i < v; ++i) {
         cout<<i<<" ["<<weight[i]<<"]:";
         int end = i;
+        //cout<<predecessor[i];
         while(end!=firstV){
             end = predecessor[end];
             cout<<" "<<end;
@@ -286,6 +430,16 @@ bool bfMatrix(string nazwa){
     }
 
     for (int i = 0; i < v; ++i) {
+        cout<<i<<" ["<<weight[i]<<"]:";
+        int end = i;
+        while(end!=firstV){
+            end = predecessor[end];
+            cout<<" "<<end;
+        }
+        cout<<endl;
+    }
+
+    for (int i = 0; i < v; ++i) {
         for (int j = 0; j < v; ++j) {
             if (matrix[i][j] == 0) continue;
             if (weight[j] > weight[i] + matrix[i][j]) return false;
@@ -345,6 +499,17 @@ bool bfList(string nazwa){
     }
 
     for (int i = 0; i < v; ++i) {
+        cout<<i<<" ["<<weight[i]<<"]:";
+        int end = i;
+        //cout<<predecessor[i];
+        while(end!=firstV){
+            end = predecessor[end];
+            cout<<" "<<end;
+        }
+        cout<<endl;
+    }
+
+    for (int i = 0; i < v; ++i) {
         for (temp = list.lists[i]; temp; temp = temp->next) {
             if (weight[temp->v] > weight[i] + temp->weight) return false;
         }
@@ -353,24 +518,70 @@ bool bfList(string nazwa){
 }
 
 int main() {
+   /* dijkstraMatrix("dane_droga.txt");
+    cout<<endl;
+    dijkstraList("dane_droga.txt");
+    cout<<endl;
+    bfList("dane_droga.txt");
+    cout<<endl;
+    bfMatrix("dane_droga.txt");
+*//*
+    kruskalList("dane_mst.txt");
+    cout<<endl;
+    primList("dane_mst.txt");
+    cout<<endl;
+    kruskalMatrix("dane_mst.txt");
+    cout<<endl;
+    primMatrix("dane_mst.txt");
+*/
     cout<<"podaj algorytm"<<endl;
     string odp="";
     cin>>odp;
-    if(odp=="kruskal"){
+    if(odp=="mstM"){
         cout<<"Podaj nazwe pliku"<<endl;
         odp="";
         cin>>odp;
         kruskalMatrix(odp);
-    }
-    if(odp=="prim"){
+        primMatrix(odp);
+    } else if(odp=="mstL"){
         cout<<"Podaj nazwe pliku"<<endl;
         odp="";
         cin>>odp;
-        primo(odp);
+        kruskalList(odp);
+        primList(odp);
+    } else if(odp=="drogaL"){
+        cout<<"Podaj nazwe pliku"<<endl;
+        odp="";
+        cin>>odp;
+        dijkstraList(odp);
+        bfList(odp);
+    } else if(odp=="drogaM"){
+        cout<<"Podaj nazwe pliku"<<endl;
+        odp="";
+        cin>>odp;
+        dijkstraMatrix(odp);
+        bfMatrix(odp);
+    } else if(odp=="displayM"){
+        cout<< "Czy mst?"<<endl;
+        bool mst;
+        cin>>mst;
+        cout<<"Podaj nazwe pliku"<<endl;
+        odp="";
+        cin>>odp;
+        displayM(odp, mst);
+    }
+    else if(odp=="displayL"){
+        cout<< "Czy mst?"<<endl;
+        bool mst;
+        cin>>mst;
+        cout<<"Podaj nazwe pliku"<<endl;
+        odp="";
+        cin>>odp;
+        displayL(odp, mst);
     }
     //cout<<"Podaj nazwe pliku"<<endl;
     //primo();
-    //kruskalMatrix();
+    //kruskalMatrix();*/
     system("pause");
 
     return 0;

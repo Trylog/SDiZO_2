@@ -5,33 +5,29 @@
 #include "PriorityQueue.h"
 
 namespace std {
-
-    template <class T>
-    inline void PriorityQueue<T>::swap(T* a, T* b)
+    inline void PriorityQueue::swap(Edge* a, Edge* b)
     {
         auto temp = *b;
         *b = *a;
         *a = temp;
     }
 
-    template <class T>
-    void PriorityQueue<T>::heapify(int i) {
+    void PriorityQueue::heapify(int i) {
         int smallest;
         while(true){
             auto left = i*2+1;
             auto right = i*2+2;
-            if(left < size && heap[left] < heap[i]){
+            if(left < size && heap[left].weight < heap[i].weight){
                 smallest = left;
             }else smallest = i;
-            if(right < size && heap[right] < heap[smallest]) smallest = right;
+            if(right < size && heap[right].weight < heap[smallest].weight) smallest = right;
             if(smallest != i){swap(&heap[i], &heap[smallest]);
             } else break;
             i = smallest;
         }
     }
 
-    template <class T>
-    void PriorityQueue<T>::deleteMinimum() {
+    void PriorityQueue::deleteMinimum() {
 
         auto temp = new Edge[size-1];
         swap(&heap[0], &heap[size-1]);
@@ -43,37 +39,33 @@ namespace std {
         heap=temp;*/
     }
 
-    template <class T>
-    void PriorityQueue<T>::insert(T element) {
+    void PriorityQueue::insert(Edge edge) {
         if(size==allocatedSize){
-            auto temp = new T[size+1];
+            auto temp = new Edge[size+1];
             for (int i = 0; i < size; ++i) {
                 temp[i]=heap[i];
             }
             delete[] heap;
             heap=temp;
         }
-        heap[size]=element;
-        for(int i = size; heap[(i-1)/2]>heap[i]&&i!=0;i=(i-1)/2) {
+        heap[size]=edge;
+        for(int i = size; heap[(i-1)/2].weight>heap[i].weight&&i!=0;i=(i-1)/2) {
             swap(&heap[i], &heap[(i-1)/2]);
         }
         size++;
     }
 
-    template <class T>
-    T PriorityQueue<T>::minimum() {
+    Edge PriorityQueue::minimum() {
         return heap[0];
     }
 
-    template <class T>
-    PriorityQueue<T>::PriorityQueue(int size) {
+    PriorityQueue::PriorityQueue(int size) {
         allocatedSize = size;
-        heap = new T[size];
+        heap = new Edge[size];
         this->size = 0;
     }
 
-    template <class T>
-    PriorityQueue<T>::~PriorityQueue() {
+    PriorityQueue::~PriorityQueue() {
         delete[] heap;
     }
 } // std

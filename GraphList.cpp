@@ -2,6 +2,7 @@
 // Created by micha on 08.05.2023.
 //
 
+#include <iostream>
 #include "GraphList.h"
 #include "TNode.h"
 
@@ -26,6 +27,14 @@ namespace std {
     }
 
     void GraphList::display() {
+        int i;
+        TNode *p;
 
+        cout << endl;
+        for( i = 0; i < v; i++ ){
+            cout << "Vertex " << i << " - ";
+            for( p =  lists[ i ]; p; p = p->next ) cout << p->v << ":" << p->weight << " ";
+            cout << endl;
+        }
     }
 } // std

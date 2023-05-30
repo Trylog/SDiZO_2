@@ -8,21 +8,21 @@
 #include "Edge.h"
 
 namespace std {
-    template <class T>
+
     class PriorityQueue {
 
     private:
-        T* heap;
+        Edge* heap;
         int allocatedSize;
-        static inline void swap(T* a,T* b);
+        static inline void swap(Edge* a,Edge* b);
         void heapify(int i);
     public:
         int size;
         explicit PriorityQueue(int size);
         ~PriorityQueue();
         void deleteMinimum();
-        void insert(T element);
-        T minimum();
+        void insert(Edge edge);
+        Edge minimum();
     };
 
 } // std

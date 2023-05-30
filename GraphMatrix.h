@@ -10,9 +10,9 @@
 namespace std {
 
     class GraphMatrix {
-        int** matrix;
         int v; //liczba wierzchołków
     public:
+        int** matrix;
         explicit GraphMatrix(int v);
         ~GraphMatrix();
         void insert(Edge edge);

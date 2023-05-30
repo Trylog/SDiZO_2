@@ -3,4 +3,4 @@ project(SDiZO_2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(SDiZO_2 main.cpp DisjoinedSets.cpp GraphMatrix.cpp PriorityQueue.cpp GraphList.cpp MSTree.cpp TNode.h Prim.cpp Prim.h EdgeDij.h Edge.h)
+add_executable(SDiZO_2 main.cpp DisjoinedSets.cpp GraphMatrix.cpp PriorityQueue.cpp GraphList.cpp MSTree.cpp TNode.h Prim.cpp Prim.h Edge.h)
