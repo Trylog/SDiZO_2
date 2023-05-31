@@ -352,7 +352,7 @@ void dijkstraList(string nazwa){
             if (wasVisited[i] == 1 && weight[i] < weight[minWeightNr])minWeightNr = i;
         }
 
-        for (temp = list.lists[j]; temp; temp = temp->next) {
+        for (temp = list.lists[minWeightNr]; temp; temp = temp->next) {
             if ((wasVisited[temp->v] == 0 || wasVisited[temp->v] != 2 && weight[temp->v] > weight[minWeightNr] + temp->weight)) {
                 weight[temp->v] = weight[minWeightNr] + temp->weight;
                 predecessor[temp->v] = minWeightNr;
@@ -518,22 +518,22 @@ bool bfList(string nazwa){
 }
 
 int main() {
-   /* dijkstraMatrix("dane_droga.txt");
+    dijkstraMatrix("dane_droga.txt");
     cout<<endl;
     dijkstraList("dane_droga.txt");
     cout<<endl;
     bfList("dane_droga.txt");
     cout<<endl;
     bfMatrix("dane_droga.txt");
-*//*
+    cout<<endl<<endl;
     kruskalList("dane_mst.txt");
     cout<<endl;
     primList("dane_mst.txt");
     cout<<endl;
     kruskalMatrix("dane_mst.txt");
     cout<<endl;
-    primMatrix("dane_mst.txt");
-*/
+    primMatrix("dane_mst.txt");//
+/*
     cout<<"podaj algorytm"<<endl;
     string odp="";
     cin>>odp;
