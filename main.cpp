@@ -212,6 +212,7 @@ void primMatrix(string nazwa) {
                 input >> tempIn.n2;
                 input >> tempIn.weight;
                 g.insert(tempIn);
+                g.insert(Edge{tempIn.n2, tempIn.n1, tempIn.weight});
             } else throw -3; //wrong file length
         }
     }
