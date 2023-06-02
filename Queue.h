@@ -8,12 +8,12 @@
 
 class Queue {
 private:
-    struct node{
+    struct Node{
         int data;
-        node* next;
+        Node* next;
     };
-    node* head;
-    node* tail;
+    Node* head;
+    Node* tail;
 public:
     Queue();
     ~Queue();
