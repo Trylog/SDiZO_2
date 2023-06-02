@@ -85,8 +85,8 @@ build CMakeFiles/SDiZO_2.dir/MSTree.cpp.obj: CXX_COMPILER__SDiZO_2_Debug C$:/Use
   OBJECT_DIR = CMakeFiles\SDiZO_2.dir
   OBJECT_FILE_DIR = CMakeFiles\SDiZO_2.dir
 
-build CMakeFiles/SDiZO_2.dir/Prim.cpp.obj: CXX_COMPILER__SDiZO_2_Debug C$:/Users/micha/CLionProjects/SDiZO_2/Prim.cpp || cmake_object_order_depends_target_SDiZO_2
-  DEP_FILE = CMakeFiles\SDiZO_2.dir\Prim.cpp.obj.d
+build CMakeFiles/SDiZO_2.dir/Queue.cpp.obj: CXX_COMPILER__SDiZO_2_Debug C$:/Users/micha/CLionProjects/SDiZO_2/Queue.cpp || cmake_object_order_depends_target_SDiZO_2
+  DEP_FILE = CMakeFiles\SDiZO_2.dir\Queue.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\SDiZO_2.dir
   OBJECT_FILE_DIR = CMakeFiles\SDiZO_2.dir
@@ -99,7 +99,7 @@ build CMakeFiles/SDiZO_2.dir/Prim.cpp.obj: CXX_COMPILER__SDiZO_2_Debug C$:/Users
 #############################################
 # Link the executable SDiZO_2.exe
 
-build SDiZO_2.exe: CXX_EXECUTABLE_LINKER__SDiZO_2_Debug CMakeFiles/SDiZO_2.dir/main.cpp.obj CMakeFiles/SDiZO_2.dir/DisjoinedSets.cpp.obj CMakeFiles/SDiZO_2.dir/GraphMatrix.cpp.obj CMakeFiles/SDiZO_2.dir/PriorityQueue.cpp.obj CMakeFiles/SDiZO_2.dir/GraphList.cpp.obj CMakeFiles/SDiZO_2.dir/MSTree.cpp.obj CMakeFiles/SDiZO_2.dir/Prim.cpp.obj
+build SDiZO_2.exe: CXX_EXECUTABLE_LINKER__SDiZO_2_Debug CMakeFiles/SDiZO_2.dir/main.cpp.obj CMakeFiles/SDiZO_2.dir/DisjoinedSets.cpp.obj CMakeFiles/SDiZO_2.dir/GraphMatrix.cpp.obj CMakeFiles/SDiZO_2.dir/PriorityQueue.cpp.obj CMakeFiles/SDiZO_2.dir/GraphList.cpp.obj CMakeFiles/SDiZO_2.dir/MSTree.cpp.obj CMakeFiles/SDiZO_2.dir/Queue.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\SDiZO_2.dir

@@ -6,6 +6,7 @@
 #include "MSTree.h"
 #include "TNode.h"
 #include "GraphList.h"
+#include "Queue.h"
 
 using namespace std;
 
@@ -518,22 +519,99 @@ bool bfList(string nazwa){
     return true;
 }
 
+void fordFulkerson(string nazwa){
+
+}
+bool edmondsKarp(string nazwa){
+
+    int v, e, source, sink;
+
+    fstream input;
+    input.open(nazwa, ios::in);
+    //if (input.good()) {
+    input >> e;
+    input >> v;
+    input >> source;
+    input >> sink;
+
+    Queue queue;
+    bool flag;
+    int maxFlow = 0, n1, residVertexThroughput;
+    int* predecessor = new int[v];
+    int* pathResidThroughput = new int[v];
+    int** throughput = new int*[v];
+    int** flow = new int*[v];
+    for (int i = 0; i < v; ++i) {
+        throughput[i] = new int[v];
+        for (int j = 0; j < v;++j) throughput[i][j]=0;
+        flow[i] = new int[v];
+        for (int j = 0; j < v;++j) flow[i][j]=0;
+    }
+
+    if (e) {
+        Edge tempIn{};
+        for (auto i = 0; i < e; ++i) {
+            if (!input.eof()) {
+                input >> tempIn.n1;
+                input >> tempIn.n2;
+                input >> tempIn.weight;
+                throughput[tempIn.n1][tempIn.n2] = tempIn.weight;
+            } else throw -3; //wrong file length
+        }
+    }
+
+    while (true){
+        for (int i = 0; i < v; ++i) predecessor[i] = -1;
+        predecessor[source] = -2;
+        pathResidThroughput[source] = INT32_MAX;
+
+        queue.empty();
+        queue.push(source);
+        flag = false;
+
+        while (!queue.isEmpty()){
+            n1 = queue.first();
+            queue.pop();
+            for (int n2 = 0; n2 < v; ++n2) {
+                residVertexThroughput = throughput[n1][n2] - flow[n1][n2];
+                if (residVertexThroughput || predecessor[n2] != -1) continue;
+
+                predecessor[n2] = n1;
+                pathResidThroughput[n1] = min(pathResidThroughput[n2], residVertexThroughput);
+
+                //skok
+
+                if(n2 == sink){
+                    queue.push(n2);
+                    return true;
+                }
+
+
+
+            }
+        }
+
+    }
+
+
+}
+
 int main() {
-    dijkstraMatrix("dane_droga.txt");
+    dijkstraMatrix("dane_droga_sk1.txt");
     cout<<endl;
-    dijkstraList("dane_droga.txt");
+    dijkstraList("dane_droga_sk1.txt");
     cout<<endl;
-    bfList("dane_droga.txt");
+    bfList("dane_droga_sk1.txt");
     cout<<endl;
-    bfMatrix("dane_droga.txt");
+    bfMatrix("dane_droga_sk1.txt");
     cout<<endl<<endl;
-    kruskalList("dane_mst.txt");
+    kruskalList("dane_mst2.txt");
     cout<<endl;
-    primList("dane_mst.txt");
+    primList("dane_mst2.txt");
     cout<<endl;
-    kruskalMatrix("dane_mst.txt");
+    kruskalMatrix("dane_mst2.txt");
     cout<<endl;
-    primMatrix("dane_mst.txt");//
+    primMatrix("dane_mst2.txt");
 /*
     cout<<"podaj algorytm"<<endl;
     string odp="";
