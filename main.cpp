@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <random>
+#include <chrono>
 #include "PriorityQueue.h"
 #include "DisjoinedSets.h"
 #include "GraphMatrix.h"
@@ -60,9 +62,9 @@ void displayL(string nazwa, bool mst){
     //  }
 }
 
-void kruskalMatrix(string nazwa){   //v - wierzchołki, e - krawędzie
+void kruskalMatrix(/*string nazwa*/int** mInput, int v, int e){   //v - wierzchołki, e - krawędzie
 
-    int v, e;
+    /*int v, e;
 
     fstream input;
     input.open(nazwa, ios::in);
@@ -82,6 +84,19 @@ void kruskalMatrix(string nazwa){   //v - wierzchołki, e - krawędzie
             }
         }
   //  }
+*/
+    PriorityQueue queue = PriorityQueue(e);
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < v; ++j) {
+            if(mInput[i][j]!=0){
+                Edge temp;
+                temp.n1 = i;
+                temp.n2 = j;
+                temp.weight = mInput[i][j];
+            }
+        }
+    }
+
 
     DisjoinedSets sets = DisjoinedSets(v);
     GraphMatrix matrix = GraphMatrix(v);
@@ -519,7 +534,69 @@ bool bfList(string nazwa){
     return true;
 }
 
+bool DFS(int** graph, int v, int* predecessor, bool* visited, int source, int sink){
+    if(sink == source)return true;
+
+    visited[source] = true;
+
+    for (int i = 0; i < v; ++i) {
+        if (graph[source][i] > 0 && !visited[i]){
+            predecessor[i] = source;
+            if(DFS(graph, v, predecessor, visited, source, sink))return true;
+        }
+    }
+    return false;
+}
+
 void fordFulkerson(string nazwa){
+
+    int v, e, source, sink;
+
+    fstream input;
+    input.open(nazwa, ios::in);
+    //if (input.good()) {
+    input >> e;
+    input >> v;
+    input >> source;
+    input >> sink;
+
+    int maxFlow = 0, residPathThroughput;
+    int* predecessor = new int[v];
+    bool* visited = new bool[v];
+    int** residVerticesThroughput = new int*[v];
+    for (int i = 0; i < v; ++i) {
+        residVerticesThroughput[i] = new int[v];
+        for (int j = 0; j < v;++j) residVerticesThroughput[i][j]=0;
+        visited[i] = false;
+    }
+
+    if (e) {
+        Edge tempIn{};
+        for (auto i = 0; i < e; ++i) {
+            if (!input.eof()) {
+                input >> tempIn.n1;
+                input >> tempIn.n2;
+                input >> tempIn.weight;
+                residVerticesThroughput[tempIn.n1][tempIn.n2] = tempIn.weight;
+            } else throw -3; //wrong file length
+        }
+    }
+
+    while (DFS(residVerticesThroughput, v, predecessor, visited, source, sink)){
+        for (int i = 0; i < v; ++i) visited[i] = false;
+        residPathThroughput = INT32_MAX;
+
+        for (int i = sink; i != source; i = predecessor[i]) {
+            residPathThroughput = min(residPathThroughput, residVerticesThroughput[predecessor[i]][i]);
+        }
+        for (int i = sink; i != source; i = predecessor[i]) {
+            auto p = predecessor[i];
+            residVerticesThroughput[p][i] -= residPathThroughput;
+            residVerticesThroughput[i][p] -= residPathThroughput;
+        }
+        maxFlow += residPathThroughput;
+    }
+
 
 }
 bool edmondsKarp(string nazwa){
@@ -582,21 +659,60 @@ bool edmondsKarp(string nazwa){
                 //skok
 
                 if(n2 == sink){
-                    queue.push(n2);
-                    return true;
+                    maxFlow += pathResidThroughput[sink];
+                    int a = n2;
+                    while (1 != source){
+                        n1 = predecessor[a];
+                        flow[n1][a] += pathResidThroughput[sink];
+                        flow[a][n1] -= pathResidThroughput[sink];
+                    }
+                    flag = true;
+                    break;
                 }
-
-
-
+                queue.push(n2);
             }
+            if(flag) break;
         }
-
+        if (!flag) break;
     }
+
 
 
 }
 
-int main() {
+int** generateMatrix(int v, int density){
+
+}
+
+Edge* generateList(int v, int density){
+
+}
+
+void tests(){
+    std::random_device rd;
+    std::uniform_int_distribution<int> distribution(0, 20);
+    double time = 0.0;
+    auto t1 = std::chrono::high_resolution_clock::now();
+    auto t2 = std::chrono::high_resolution_clock::now();
+    int lV[7] = {10,20,40,60,80,100, 150};
+    int density[3] = {20,60,99};
+    for (int n : lV){
+        for (int m : density) {
+            for (int i = 0; i < 50; ++i) {
+                auto g = generateMatrix(n, m);
+                t1 = std::chrono::high_resolution_clock::now();
+                kruskalMatrix(g, n, (n*n*m)/100);
+                t2 = std::chrono::high_resolution_clock::now();
+            }
+            auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+            time += time_span.count();
+        }
+    }
+
+}
+
+
+int main() {/*
     dijkstraMatrix("dane_droga_sk1.txt");
     cout<<endl;
     dijkstraList("dane_droga_sk1.txt");
