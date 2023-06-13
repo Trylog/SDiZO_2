@@ -26,7 +26,7 @@ namespace std {
         matrix[edge.n1][edge.n2]=edge.weight;
     }
 
-    void GraphMatrix::display() {//TODO wyświetlanie grafu
+    void GraphMatrix::display() {
         int weight=0;
         for (int i = 0; i < v; ++i) {
             for (int j = 0; j < v; ++j) {

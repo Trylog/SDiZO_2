@@ -89,10 +89,7 @@ void kruskalMatrix(/*string nazwa*/int** mInput, int v, int e){   //v - wierzcho
     for (int i = 0; i < v; ++i) {
         for (int j = 0; j < v; ++j) {
             if(mInput[i][j]!=0){
-                Edge temp;
-                temp.n1 = i;
-                temp.n2 = j;
-                temp.weight = mInput[i][j];
+                queue.insert(Edge{i, j, mInput[i][j]});
             }
         }
     }
@@ -114,11 +111,11 @@ void kruskalMatrix(/*string nazwa*/int** mInput, int v, int e){   //v - wierzcho
         matrix.insert(edge);
         sets.unite(edge);
     }
-    matrix.display();
+    //matrix.display();
 }
 
-void kruskalList(string nazwa){
-    int v, e;
+void kruskalList(/*string nazwa*/int** mInput,int v, int e){
+    /*int v, e;
 
     fstream input;
     input.open(nazwa, ios::in);
@@ -138,6 +135,16 @@ void kruskalList(string nazwa){
         }
     }
     //  }
+*/
+    PriorityQueue queue = PriorityQueue(e);
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < v; ++j) {
+            if(mInput[i][j]!=0){
+                queue.insert(Edge{i, j, mInput[i][j]});
+            }
+        }
+    }
+
 
     DisjoinedSets sets = DisjoinedSets(v);
     MSTree matrix = MSTree(v);
@@ -155,10 +162,11 @@ void kruskalList(string nazwa){
         matrix.addEdge(edge);
         sets.unite(edge);
     }
-    matrix.print();
+    //matrix.print();
 }
 
-void primList(string nazwa){
+void primList(/*string nazwa*/int** in, int v, int e){
+    /*
     int v, e, wStart=0;
     fstream input;
     input.open(nazwa, ios::in);
@@ -179,6 +187,15 @@ void primList(string nazwa){
             }
         }
     //}
+     */
+    int wStart=0;
+    MSTree g(v);
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < v; ++j) {
+            g.addEdge(Edge{i, j, in[i][j]});
+        }
+    }
+
     TNode * p;
     Edge eg{};
     bool* visited = new bool[v];
@@ -208,11 +225,11 @@ void primList(string nazwa){
             wStart = eg.n2;
         }
     }
-    m.print();
+    //m.print();
 }
 
-void primMatrix(string nazwa) {
-    int v, e, wStart=0;
+void primMatrix(/*string nazwa*/int** mInput, int v, int e) {
+    /*int v, e, wStart=0;
     fstream input;
     input.open(nazwa, ios::in);
     //if(input.good()) {
@@ -233,6 +250,17 @@ void primMatrix(string nazwa) {
         }
     }
     //}
+     */
+    int wStart=0;
+    GraphMatrix g(v);
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < v; ++j) {
+            if(mInput[i][j]!=0){
+                g.insert(Edge{j, i, mInput[i][j]});
+            }
+        }
+    }
+
     TNode * p;
     Edge eg{};
     bool* visited = new bool[v];
@@ -263,11 +291,11 @@ void primMatrix(string nazwa) {
             wStart = eg.n2;
         }
     }
-    m.display();
+    //m.display();
 }
 
-void dijkstraMatrix(string nazwa){
-    int v, e, firstV;
+void dijkstraMatrix(/*string nazwa*/int** matrix, int v, int e){
+    /*int v, e, firstV;
 
     fstream input;
     input.open(nazwa, ios::in);
@@ -292,6 +320,9 @@ void dijkstraMatrix(string nazwa){
         }
     }
     //  }
+     */
+    int firstV =0;
+
     int* weight = new int[v];
     int* predecessor = new int[v];
     auto* wasVisited = new short[v];
@@ -317,7 +348,7 @@ void dijkstraMatrix(string nazwa){
         }
         wasVisited[minWeightNr] = 2;
     }
-
+/*
     for (int i = 0; i < v; ++i) {
         cout<<i<<" ["<<weight[i]<<"]:";
         int end = i;
@@ -326,12 +357,16 @@ void dijkstraMatrix(string nazwa){
             cout<<" "<<end;
         }
         cout<<endl;
-    }
+    }*/
+
+    delete[] weight;
+    delete[] predecessor;
+    delete[] wasVisited;
 
 }
 
-void dijkstraList(string nazwa){
-    int v, e, firstV;
+void dijkstraList(/*string nazwa*/int** matrix, int v, int e){
+    /*int v, e, firstV;
 
     fstream input;
     input.open(nazwa, ios::in);
@@ -352,6 +387,15 @@ void dijkstraList(string nazwa){
         }
     }
     //  }
+*/
+    int firstV = 0;
+    GraphList list = GraphList(v);
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < v; ++j) {
+            list.insert(Edge{i, j, matrix[i][j]});
+        }
+    }
+
     int* weight = new int[v];
     int* predecessor = new int[v];
     auto* wasVisited = new short[v];
@@ -378,7 +422,7 @@ void dijkstraList(string nazwa){
         }
         wasVisited[minWeightNr] = 2;
     }
-
+/*
     for (int i = 0; i < v; ++i) {
         cout<<i<<" ["<<weight[i]<<"]:";
         int end = i;
@@ -388,13 +432,15 @@ void dijkstraList(string nazwa){
             cout<<" "<<end;
         }
         cout<<endl;
-    }
-
+    }*/
+    delete[] weight;
+    delete[] predecessor;
+    delete[] wasVisited;
 }
 
-bool bfMatrix(string nazwa){
+bool bfMatrix(/*string nazwa*/int** matrix, int v, int e){
 
-    int v, e, firstV;
+    /*int v, e, firstV;
 
     fstream input;
     input.open(nazwa, ios::in);
@@ -419,6 +465,9 @@ bool bfMatrix(string nazwa){
         }
     }
     //  }
+     */
+
+    int firstV =0;
     int* weight = new int[v];
     int* predecessor = new int[v];
     auto* wasVisited = new bool [v];
@@ -446,7 +495,7 @@ bool bfMatrix(string nazwa){
         if (!changes) break;
     }
 
-    for (int i = 0; i < v; ++i) {
+    /*for (int i = 0; i < v; ++i) {
         cout<<i<<" ["<<weight[i]<<"]:";
         int end = i;
         while(end!=firstV){
@@ -454,19 +503,27 @@ bool bfMatrix(string nazwa){
             cout<<" "<<end;
         }
         cout<<endl;
-    }
+    }*/
 
     for (int i = 0; i < v; ++i) {
         for (int j = 0; j < v; ++j) {
             if (matrix[i][j] == 0) continue;
-            if (weight[j] > weight[i] + matrix[i][j]) return false;
+            if (weight[j] > weight[i] + matrix[i][j]){
+                delete[] weight;
+                delete[] predecessor;
+                delete[] wasVisited;
+                return false;
+            }
         }
     }
+    delete[] weight;
+    delete[] predecessor;
+    delete[] wasVisited;
     return true;
 }
 
-bool bfList(string nazwa){
-
+bool bfList(/*string nazwa*/int** matrix, int v, int e){
+/*
     int v, e, firstV;
 
     fstream input;
@@ -488,6 +545,16 @@ bool bfList(string nazwa){
         }
     }
     //  }
+*/
+
+    int firstV = 0;
+    GraphList list = GraphList(v);
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < v; ++j) {
+            list.insert(Edge{i, j, matrix[i][j]});
+        }
+    }
+
     int* weight = new int[v];
     int* predecessor = new int[v];
     auto* wasVisited = new bool [v];
@@ -514,7 +581,7 @@ bool bfList(string nazwa){
         }
         if (!changes) break;
     }
-
+/*
     for (int i = 0; i < v; ++i) {
         cout<<i<<" ["<<weight[i]<<"]:";
         int end = i;
@@ -524,13 +591,21 @@ bool bfList(string nazwa){
             cout<<" "<<end;
         }
         cout<<endl;
-    }
+    }*/
 
     for (int i = 0; i < v; ++i) {
         for (temp = list.lists[i]; temp; temp = temp->next) {
-            if (weight[temp->v] > weight[i] + temp->weight) return false;
+            if (weight[temp->v] > weight[i] + temp->weight){
+                delete[] weight;
+                delete[] predecessor;
+                delete[] wasVisited;
+                return false;
+            }
         }
     }
+    delete[] weight;
+    delete[] predecessor;
+    delete[] wasVisited;
     return true;
 }
 
@@ -542,13 +617,31 @@ bool DFS(int** graph, int v, int* predecessor, bool* visited, int source, int si
     for (int i = 0; i < v; ++i) {
         if (graph[source][i] > 0 && !visited[i]){
             predecessor[i] = source;
-            if(DFS(graph, v, predecessor, visited, source, sink))return true;
+            if(DFS(graph, v, predecessor, visited, i, sink))return true;
         }
     }
     return false;
 }
 
-void fordFulkerson(string nazwa){
+bool BFS(int** graph, int v, int* predecessor, bool* visited, int source, int sink){
+    Queue queue = Queue();
+    predecessor[source] = -1;
+    queue.push(source);
+    while (!queue.isEmpty()){
+        int a = queue.first();
+        queue.pop();
+        for (int i = 0; i < v; ++i) {
+            if(!visited[i] && graph[a][i] > 0){
+                queue.push(i);
+                predecessor[i] = a;
+                visited[i] = true;
+            }
+        }
+    }
+    return visited[sink];
+}
+
+void fordFulkersonD(string nazwa/* int** residVerticesThroughput, int v, int e, int source, int sink*/){
 
     int v, e, source, sink;
 
@@ -581,25 +674,113 @@ void fordFulkerson(string nazwa){
             } else throw -3; //wrong file length
         }
     }
+/*
+    int maxFlow = 0, residPathThroughput;
+    int* predecessor = new int[v];
+    bool* visited = new bool[v];
+    //int** residVerticesThroughput = new int*[v];
+    for (int i = 0; i < v; ++i) {
+        residVerticesThroughput[i] = new int[v];
+        for (int j = 0; j < v;++j) residVerticesThroughput[i][j]=0;
+        visited[i] = false;
+    }
+*/
 
     while (DFS(residVerticesThroughput, v, predecessor, visited, source, sink)){
         for (int i = 0; i < v; ++i) visited[i] = false;
         residPathThroughput = INT32_MAX;
 
         for (int i = sink; i != source; i = predecessor[i]) {
+            auto p = predecessor[i];
             residPathThroughput = min(residPathThroughput, residVerticesThroughput[predecessor[i]][i]);
         }
         for (int i = sink; i != source; i = predecessor[i]) {
             auto p = predecessor[i];
             residVerticesThroughput[p][i] -= residPathThroughput;
-            residVerticesThroughput[i][p] -= residPathThroughput;
+            residVerticesThroughput[i][p] += residPathThroughput;
         }
         maxFlow += residPathThroughput;
     }
-
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < v; ++j) {
+            cout<<residVerticesThroughput[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<maxFlow<<endl;
 
 }
-bool edmondsKarp(string nazwa){
+
+void fordFulkersonB(string nazwa/* int** residVerticesThroughput, int v, int e, int source, int sink*/){
+
+    int v, e, source, sink;
+
+    fstream input;
+    input.open(nazwa, ios::in);
+    //if (input.good()) {
+    input >> e;
+    input >> v;
+    input >> source;
+    input >> sink;
+
+    int maxFlow = 0, residPathThroughput;
+    int* predecessor = new int[v];
+    bool* visited = new bool[v];
+    int** residVerticesThroughput = new int*[v];
+    for (int i = 0; i < v; ++i) {
+        residVerticesThroughput[i] = new int[v];
+        for (int j = 0; j < v;++j) residVerticesThroughput[i][j]=0;
+        visited[i] = false;
+    }
+
+    if (e) {
+        Edge tempIn{};
+        for (auto i = 0; i < e; ++i) {
+            if (!input.eof()) {
+                input >> tempIn.n1;
+                input >> tempIn.n2;
+                input >> tempIn.weight;
+                residVerticesThroughput[tempIn.n1][tempIn.n2] = tempIn.weight;
+            } else throw -3; //wrong file length
+        }
+    }
+/*
+    int maxFlow = 0, residPathThroughput;
+    int* predecessor = new int[v];
+    bool* visited = new bool[v];
+    //int** residVerticesThroughput = new int*[v];
+    for (int i = 0; i < v; ++i) {
+        residVerticesThroughput[i] = new int[v];
+        for (int j = 0; j < v;++j) residVerticesThroughput[i][j]=0;
+        visited[i] = false;
+    }
+*/
+
+    while (BFS(residVerticesThroughput, v, predecessor, visited, source, sink)){
+        for (int i = 0; i < v; ++i) visited[i] = false;
+        residPathThroughput = INT32_MAX;
+
+        for (int i = sink; i != source; i = predecessor[i]) {
+            auto p = predecessor[i];
+            residPathThroughput = min(residPathThroughput, residVerticesThroughput[predecessor[i]][i]);
+        }
+        for (int i = sink; i != source; i = predecessor[i]) {
+            auto p = predecessor[i];
+            residVerticesThroughput[p][i] -= residPathThroughput;
+            residVerticesThroughput[i][p] += residPathThroughput;
+        }
+        maxFlow += residPathThroughput;
+    }
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < v; ++j) {
+            cout<<residVerticesThroughput[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<< maxFlow;
+
+}
+void edmondsKarp(string nazwa){
 
     int v, e, source, sink;
 
@@ -682,32 +863,271 @@ bool edmondsKarp(string nazwa){
 
 int** generateMatrix(int v, int density){
 
+    srand(time(nullptr));
+    int** matrix = new int*[v];
+    for (int i = 0; i < v; ++i) {
+        matrix[i] = new int[v];
+        for (int j = 0; j < v; ++j) matrix[i][j]=0;
+    }
+
+    if(density==99){
+        for (int i = 0; i < v; ++i) {
+            for (int j = 0; j < v; ++j) {
+                if(i != j){
+                    matrix[i][j] = rand() % 100 + 1;
+                }
+            }
+        }
+        int temp = v * (v - 1) / 100;
+        while (temp) {
+            int x, y;
+            do{
+                x = rand() % v;
+                y = rand() % v;
+            }while(!matrix[x][y]);
+            matrix[x][y] = 0;
+            temp--;
+        }
+        return matrix;
+    }
+
+    for (int i = 1; i < v; ++i) matrix[rand() % i][i] = rand() % 100 + 1;
+
+    int e = v * (v-1) * density / 100;
+    e -= v;
+    if(e == 0) return matrix;
+    if(e < 0) throw -4;
+    while(e){
+        int x, y;
+        do{
+            x = rand() % v;
+            y = rand() % v;
+        }while(matrix[x][y] || x == y);
+        matrix[x][y] = rand() % 100 + 1;
+        e--;
+    }
+
+    return matrix;
 }
 
-Edge* generateList(int v, int density){
-
+GraphList generateList(int v, int density){
+    GraphList list = GraphList(v);
+    auto matrix = generateMatrix(v, density);
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j < v; ++j) {
+            if(matrix[i][j])list.insert(Edge{i, j, matrix[i][j]});
+        }
+    }
+    return list;
 }
 
 void tests(){
-    std::random_device rd;
     std::uniform_int_distribution<int> distribution(0, 20);
     double time = 0.0;
     auto t1 = std::chrono::high_resolution_clock::now();
     auto t2 = std::chrono::high_resolution_clock::now();
     int lV[7] = {10,20,40,60,80,100, 150};
-    int density[3] = {20,60,99};
+    int density[3] = {20,60, 99};
+    /*cout<<"kruskalMatrix";
     for (int n : lV){
+        cout<<"lV: "<<n;
         for (int m : density) {
             for (int i = 0; i < 50; ++i) {
                 auto g = generateMatrix(n, m);
                 t1 = std::chrono::high_resolution_clock::now();
-                kruskalMatrix(g, n, (n*n*m)/100);
+                kruskalMatrix(g, n, n*n);
                 t2 = std::chrono::high_resolution_clock::now();
+                auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+                time += time_span.count();
+                for (int i = 0; i < n; ++i) {
+                    delete[] g[i];
+                }
+                delete[] g;
             }
-            auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
-            time += time_span.count();
+            cout<<" "<<time;
+            time = 0.0;
         }
+        cout<<endl;
     }
+
+    cout<<endl<<endl<<"kruskalList";
+    for (int n : lV){
+        cout<<"lV: "<<n;
+        for (int m : density) {
+            for (int i = 0; i < 50; ++i) {
+                auto g = generateMatrix(n, m);
+                t1 = std::chrono::high_resolution_clock::now();
+                kruskalList(g, n, n*n);
+                t2 = std::chrono::high_resolution_clock::now();
+                auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+                time += time_span.count();
+                for (int i = 0; i < n; ++i) {
+                    delete[] g[i];
+                }
+                delete[] g;
+            }
+            cout<<" "<<time;
+            time = 0.0;
+        }
+        cout<<endl;
+    }*/
+/*
+    cout<<endl<<endl<<"primMatrix";
+    for (int n : lV){
+        cout<<"lV: "<<n;
+        for (int m : density) {
+            for (int i = 0; i < 50; ++i) {
+                auto g = generateMatrix(n, m);
+                t1 = std::chrono::high_resolution_clock::now();
+                primMatrix(g, n, n*n);
+                t2 = std::chrono::high_resolution_clock::now();
+                auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+                time += time_span.count();
+                for (int i = 0; i < n; ++i) {
+                    delete[] g[i];
+                }
+                delete[] g;
+            }
+            cout<<" "<<time;
+            time = 0.0;
+        }
+        cout<<endl;
+    }*/
+/*
+    cout<<endl<<endl<<"PrimList";
+    for (int n : lV){
+        cout<<"lV: "<<n;
+        for (int m : density) {
+            for (int i = 0; i < 50; ++i) {
+                auto g = generateMatrix(n, m);
+                t1 = std::chrono::high_resolution_clock::now();
+                primList(g, n, n*n);
+                t2 = std::chrono::high_resolution_clock::now();
+                auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+                time += time_span.count();
+                for (int i = 0; i < n; ++i) {
+                    delete[] g[i];
+                }
+                delete[] g;
+            }
+            cout<<" "<<time;
+            time = 0.0;
+        }
+        cout<<endl;
+    }*/
+/*
+    cout<<endl<<endl<<"dijkstraMatrix";
+    for (int n : lV){
+        cout<<"lV: "<<n;
+        for (int m : density) {
+            for (int i = 0; i < 50; ++i) {
+                auto g = generateMatrix(n, m);
+                t1 = std::chrono::high_resolution_clock::now();
+                dijkstraMatrix(g, n, n*n);
+                t2 = std::chrono::high_resolution_clock::now();
+                auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+                time += time_span.count();
+                for (int i = 0; i < n; ++i) {
+                    delete[] g[i];
+                }
+                delete[] g;
+            }
+            cout<<";"<<time;
+            time = 0.0;
+        }
+        cout<<endl;
+    }
+
+    cout<<endl<<endl<<"dijkstraList";
+    for (int n : lV){
+        cout<<"lV: "<<n;
+        for (int m : density) {
+            for (int i = 0; i < 50; ++i) {
+                auto g = generateMatrix(n, m);
+                t1 = std::chrono::high_resolution_clock::now();
+                dijkstraList(g, n, n*n);
+                t2 = std::chrono::high_resolution_clock::now();
+                auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+                time += time_span.count();
+                for (int i = 0; i < n; ++i) {
+                    delete[] g[i];
+                }
+                delete[] g;
+            }
+            cout<<";"<<time;
+            time = 0.0;
+        }
+        cout<<endl;
+    }
+
+    cout<<endl<<endl<<"bfMatrix";
+    for (int n : lV){
+        cout<<"lV: "<<n;
+        for (int m : density) {
+            for (int i = 0; i < 50; ++i) {
+                auto g = generateMatrix(n, m);
+                t1 = std::chrono::high_resolution_clock::now();
+                bfMatrix(g, n, n*n);
+                t2 = std::chrono::high_resolution_clock::now();
+                auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+                time += time_span.count();
+                for (int i = 0; i < n; ++i) {
+                    delete[] g[i];
+                }
+                delete[] g;
+            }
+            cout<<";"<<time;
+            time = 0.0;
+        }
+        cout<<endl;
+    }
+
+    cout<<endl<<endl<<"bfList";
+    for (int n : lV){
+        cout<<"lV: "<<n;
+        for (int m : density) {
+            for (int i = 0; i < 50; ++i) {
+                auto g = generateMatrix(n, m);
+                t1 = std::chrono::high_resolution_clock::now();
+                bfList(g, n, n*n);
+                t2 = std::chrono::high_resolution_clock::now();
+                auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+                time += time_span.count();
+                for (int i = 0; i < n; ++i) {
+                    delete[] g[i];
+                }
+                delete[] g;
+            }
+            cout<<";"<<time;
+            time = 0.0;
+        }
+        cout<<endl;
+    }*/
+/*
+    cout<<endl<<endl<<"ff";
+    for (int n : lV){
+        cout<<"lV: "<<n;
+        for (int m : density) {
+            for (int i = 0; i < 50; ++i) {
+                auto g = generateMatrix(n, m);
+                int soutce =rand()%n;
+                int sink =rand()%n;
+                t1 = std::chrono::high_resolution_clock::now();
+                fordFulkerson(g, n, n*n, soutce, sink);
+                t2 = std::chrono::high_resolution_clock::now();
+                auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+                time += time_span.count();
+                for (int i = 0; i < n; ++i) {
+                    delete[] g[i];
+                }
+                delete[] g;
+            }
+            cout<<";"<<time;
+            time = 0.0;
+        }
+        cout<<endl;
+    }*/
+
 
 }
 
@@ -728,17 +1148,18 @@ int main() {/*
     kruskalMatrix("dane_mst2.txt");
     cout<<endl;
     primMatrix("dane_mst2.txt");
-/*
+*/
     cout<<"podaj algorytm"<<endl;
     string odp="";
     cin>>odp;
-    if(odp=="mstM"){
+    if(odp=="ff"){
         cout<<"Podaj nazwe pliku"<<endl;
         odp="";
         cin>>odp;
-        kruskalMatrix(odp);
-        primMatrix(odp);
-    } else if(odp=="mstL"){
+        fordFulkersonB(odp);
+        cout<<endl;
+        fordFulkersonD(odp);
+    }/* else if(odp=="mstL"){
         cout<<"Podaj nazwe pliku"<<endl;
         odp="";
         cin>>odp;
@@ -776,7 +1197,17 @@ int main() {/*
     }
     //cout<<"Podaj nazwe pliku"<<endl;
     //primo();
-    //kruskalMatrix();*/
+    //kruskalMatrix();
+    tests();
+    //fordFulkerson("dane_flow.txt");
+    /*auto matrix  = generateMatrix(40, 99);
+    for (int i = 0; i < 40; ++i) {
+        for (int j = 0; j < 40; ++j) {
+            cout<<matrix[i][j]<<" ";
+        }
+        cout<<endl;
+    }*/
+
     system("pause");
 
     return 0;
