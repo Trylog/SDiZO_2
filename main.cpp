@@ -1,3 +1,5 @@
+//Code by Michał Bernacki-Janson
+
 #include <iostream>
 #include <fstream>
 #include <random>
@@ -641,8 +643,8 @@ bool BFS(int** graph, int v, int* predecessor, bool* visited, int source, int si
     return visited[sink];
 }
 
-void fordFulkersonD(string nazwa/* int** residVerticesThroughput, int v, int e, int source, int sink*/){
-
+void fordFulkersonD(/*string nazwa*/ int** residVerticesThroughput, int v, int e, int source, int sink){
+/* // to jest do czytania z pliku
     int v, e, source, sink;
 
     fstream input;
@@ -673,8 +675,8 @@ void fordFulkersonD(string nazwa/* int** residVerticesThroughput, int v, int e, 
                 residVerticesThroughput[tempIn.n1][tempIn.n2] = tempIn.weight;
             } else throw -3; //wrong file length
         }
-    }
-/*
+    }*/
+
     int maxFlow = 0, residPathThroughput;
     int* predecessor = new int[v];
     bool* visited = new bool[v];
@@ -684,7 +686,7 @@ void fordFulkersonD(string nazwa/* int** residVerticesThroughput, int v, int e, 
         for (int j = 0; j < v;++j) residVerticesThroughput[i][j]=0;
         visited[i] = false;
     }
-*/
+//*/
 
     while (DFS(residVerticesThroughput, v, predecessor, visited, source, sink)){
         for (int i = 0; i < v; ++i) visited[i] = false;
